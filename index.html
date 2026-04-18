@@ -310,6 +310,7 @@
             padding: 50px 30px;
             text-align: center;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 247, 255, 0.9));
+            cursor: pointer;
             transition: all 0.3s ease;
             overflow: hidden;
         }
@@ -320,13 +321,15 @@
             box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
         }
 
+        .file-upload-container.drag-over {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(254, 247, 255, 0.9));
+            transform: translateY(-3px);
+        }
+
         .file-icon {
             font-size: 4rem;
             margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
             display: block;
             animation: pulse 2s ease-in-out infinite;
         }
@@ -350,14 +353,77 @@
         }
 
         .file-input {
+            position: absolute;
             width: 100%;
-            padding: 18px 25px;
-            border: 2px solid var(--border);
-            border-radius: 20px;
-            font-size: 1rem;
-            font-family: inherit;
-            background: rgba(255, 255, 255, 0.8);
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
             cursor: pointer;
+        }
+
+        .file-list {
+            margin-top: 20px;
+            text-align: left;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(214, 51, 132, 0.05);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            background: rgba(214, 51, 132, 0.1);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon-small {
+            font-size: 1.5rem;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .file-details {
+            color: var(--text-primary);
+        }
+
+        .file-name {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+
+        .file-size {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .remove-file {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 50%;
+        }
+
+        .remove-file:hover {
+            color: var(--primary);
+            background: rgba(214, 51, 132, 0.1);
         }
 
         .submit-btn {
@@ -439,6 +505,10 @@
             .radio-container {
                 flex-direction: column;
             }
+
+            .file-item {
+                padding: 12px 15px;
+            }
         }
     </style>
 </head>
@@ -497,11 +567,12 @@ Love, Mom & Dad'"></textarea>
             <div class="form-section">
                 <h3 class="section-title">Photo Upload</h3>
                 <div class="form-group">
-                    <div class="file-upload-container">
+                    <div class="file-upload-container" id="fileUpload">
                         <div class="file-icon">📸</div>
                         <div class="file-upload-text">Drag & Drop Your Dance Photos</div>
                         <div class="file-upload-hint">or click here to browse your device<br>(JPG, PNG, GIF files)</div>
                         <input type="file" id="photos" name="photos" multiple accept="image/*" class="file-input" required>
+                        <div class="file-list" id="fileList"></div>
                     </div>
                 </div>
             </div>
@@ -522,138 +593,231 @@ Love, Mom & Dad'"></textarea>
 
     <script>
         // Image compression settings
-        const MAX_WIDTH = 2000;       // good balance for print
-        const QUALITY = 0.7;          // compression level (0.6–0.8 ideal)
+        const MAX_WIDTH = 2000;
+        const QUALITY = 0.7;
 
-        // Your Google Apps Script URL - UPDATE THIS!
+        // Your Google Apps Script URL
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyaMvwqs8y_2mcuDkxH_wCOr_GUiEDJ-Vn7tkPOgwMy3DdpfXw3DAXcKwGPwf9YqpOFGw/exec';
 
-        document.getElementById('submissionForm').addEventListener('submit', handleSubmit);
+        class FormManager {
+            constructor() {
+                this.selectedFiles = [];
+                this.initializeEventListeners();
+            }
 
-        async function handleSubmit(event) {
-            event.preventDefault();
-            
-            const submitBtn = document.querySelector('.submit-btn');
-            const originalText = submitBtn.textContent;
-            const processingMsg = document.getElementById('processingMessage');
-            const successMsg = document.getElementById('successMessage');
-            
-            // Show processing state
-            submitBtn.textContent = 'Processing...';
-            submitBtn.disabled = true;
-            processingMsg.classList.add('show');
-            successMsg.classList.remove('show');
-            
-            try {
-                const filesInput = document.getElementById('photos');
-                const files = filesInput.files;
-                const processedFiles = [];
+            initializeEventListeners() {
+                const fileUpload = document.getElementById('fileUpload');
+                const fileInput = document.getElementById('photos');
+                const form = document.getElementById('submissionForm');
+
+                // Drag and drop
+                fileUpload.addEventListener('dragover', this.handleDragOver.bind(this));
+                fileUpload.addEventListener('dragleave', this.handleDragLeave.bind(this));
+                fileUpload.addEventListener('drop', this.handleDrop.bind(this));
                 
-                // Compress each image
-                for (let file of files) {
-                    const compressed = await compressImage(file);
-                    processedFiles.push(compressed);
+                // File input change
+                fileInput.addEventListener('change', this.handleFileSelect.bind(this));
+                
+                // Form submit
+                form.addEventListener('submit', this.handleSubmit.bind(this));
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                document.getElementById('fileUpload').classList.add('drag-over');
+            }
+
+            handleDragLeave(e) {
+                e.preventDefault();
+                document.getElementById('fileUpload').classList.remove('drag-over');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                document.getElementById('fileUpload').classList.remove('drag-over');
+                const files = Array.from(e.dataTransfer.files);
+                this.addFiles(files);
+            }
+
+            handleFileSelect(e) {
+                const files = Array.from(e.target.files);
+                this.addFiles(files);
+            }
+
+            addFiles(newFiles) {
+                newFiles.forEach(file => {
+                    if (file.type.startsWith('image/') && 
+                        !this.selectedFiles.some(existing => 
+                            existing.name === file.name && existing.size === file.size
+                        )) {
+                        this.selectedFiles.push(file);
+                    }
+                });
+                this.renderFileList();
+            }
+
+            removeFile(index) {
+                this.selectedFiles.splice(index, 1);
+                this.renderFileList();
+            }
+
+            renderFileList() {
+                const fileList = document.getElementById('fileList');
+                fileList.innerHTML = '';
+
+                this.selectedFiles.forEach((file, index) => {
+                    const fileItem = document.createElement('div');
+                    fileItem.className = 'file-item';
+                    fileItem.innerHTML = `
+                        <div class="file-info">
+                            <div class="file-icon-small">🖼️</div>
+                            <div class="file-details">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                            </div>
+                        </div>
+                        <button type="button" class="remove-file" onclick="formManager.removeFile(${index})">×</button>
+                    `;
+                    fileList.appendChild(fileItem);
+                });
+            }
+
+            async handleSubmit(e) {
+                e.preventDefault();
+                
+                if (this.selectedFiles.length === 0) {
+                    alert('Please upload at least one photo.');
+                    return;
                 }
+
+                const submitBtn = document.querySelector('.submit-btn');
+                const originalText = submitBtn.textContent;
+                const processingMsg = document.getElementById('processingMessage');
+                const successMsg = document.getElementById('successMessage');
                 
-                const formData = {
-                    dancerName: document.getElementById('dancerName').value,
-                    parentName: document.getElementById('parentName').value,
-                    email: document.getElementById('email').value,
-                    pageSize: document.querySelector('input[name="pageSize"]:checked').value,
-                    message: document.getElementById('message').value,
-                    files: processedFiles
-                };
+                // Show processing state
+                submitBtn.textContent = 'Processing...';
+                submitBtn.disabled = true;
+                processingMsg.classList.add('show');
+                successMsg.classList.remove('show');
                 
-                // Use form submission to bypass CORS
-                await submitViaForm(formData);
-                
-                // Show success
-                processingMsg.classList.remove('show');
-                successMsg.classList.add('show');
+                try {
+                    const processedFiles = [];
+                    
+                    // Compress each image
+                    for (let file of this.selectedFiles) {
+                        const compressed = await this.compressImage(file);
+                        processedFiles.push(compressed);
+                    }
+                    
+                    const formData = {
+                        dancerName: document.getElementById('dancerName').value,
+                        parentName: document.getElementById('parentName').value,
+                        email: document.getElementById('email').value,
+                        pageSize: document.querySelector('input[name="pageSize"]:checked').value,
+                        message: document.getElementById('message').value,
+                        files: processedFiles
+                    };
+                    
+                    // Use form submission to bypass CORS
+                    await this.submitViaForm(formData);
+                    
+                    // Show success
+                    processingMsg.classList.remove('show');
+                    successMsg.classList.add('show');
+                    this.resetForm();
+                    
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    alert('Submission failed. Please try again.');
+                } finally {
+                    submitBtn.textContent = originalText;
+                    submitBtn.disabled = false;
+                    processingMsg.classList.remove('show');
+                }
+            }
+
+            submitViaForm(formData) {
+                return new Promise((resolve) => {
+                    // Create hidden form
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = WEB_APP_URL;
+                    form.style.display = 'none';
+                    
+                    // Add JSON data as hidden input
+                    const input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = 'data';
+                    input.value = JSON.stringify(formData);
+                    form.appendChild(input);
+                    
+                    // Submit form in hidden iframe
+                    const iframe = document.createElement('iframe');
+                    iframe.style.display = 'none';
+                    iframe.name = 'submitFrame';
+                    form.target = 'submitFrame';
+                    
+                    document.body.appendChild(iframe);
+                    document.body.appendChild(form);
+                    
+                    // Clean up after submission
+                    iframe.onload = () => {
+                        setTimeout(() => {
+                            document.body.removeChild(iframe);
+                            document.body.removeChild(form);
+                            resolve();
+                        }, 1000);
+                    };
+                    
+                    form.submit();
+                });
+            }
+
+            compressImage(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (event) {
+                        const img = new Image();
+                        img.src = event.target.result;
+                        img.onload = function () {
+                            let width = img.width;
+                            let height = img.height;
+                            
+                            if (width > MAX_WIDTH) {
+                                height = height * (MAX_WIDTH / width);
+                                width = MAX_WIDTH;
+                            }
+                            
+                            const canvas = document.createElement('canvas');
+                            canvas.width = width;
+                            canvas.height = height;
+                            const ctx = canvas.getContext('2d');
+                            ctx.drawImage(img, 0, 0, width, height);
+                            
+                            const compressedBase64 = canvas.toDataURL('image/jpeg', QUALITY);
+                            resolve({
+                                fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                                mimeType: "image/jpeg",
+                                data: compressedBase64.split(',')[1]
+                            });
+                        };
+                        img.onerror = reject;
+                    };
+                    reader.onerror = reject;
+                });
+            }
+
+            resetForm() {
                 document.getElementById('submissionForm').reset();
-                
-            } catch (error) {
-                console.error('Submission error:', error);
-                alert('Submission failed. Please try again.');
-            } finally {
-                submitBtn.textContent = originalText;
-                submitBtn.disabled = false;
-                processingMsg.classList.remove('show');
+                this.selectedFiles = [];
+                this.renderFileList();
             }
         }
 
-        function submitViaForm(formData) {
-            return new Promise((resolve) => {
-                // Create hidden form
-                const form = document.createElement('form');
-                form.method = 'POST';
-                form.action = WEB_APP_URL;
-                form.style.display = 'none';
-                
-                // Add JSON data as hidden input
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                input.name = 'data';
-                input.value = JSON.stringify(formData);
-                form.appendChild(input);
-                
-                // Submit form in hidden iframe
-                const iframe = document.createElement('iframe');
-                iframe.style.display = 'none';
-                iframe.name = 'submitFrame';
-                form.target = 'submitFrame';
-                
-                document.body.appendChild(iframe);
-                document.body.appendChild(form);
-                
-                // Clean up after submission
-                iframe.onload = () => {
-                    setTimeout(() => {
-                        document.body.removeChild(iframe);
-                        document.body.removeChild(form);
-                        resolve();
-                    }, 1000);
-                };
-                
-                form.submit();
-            });
-        }
-
-        function compressImage(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function (event) {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = function () {
-                        let width = img.width;
-                        let height = img.height;
-                        
-                        // Resize if too large
-                        if (width > MAX_WIDTH) {
-                            height = height * (MAX_WIDTH / width);
-                            width = MAX_WIDTH;
-                        }
-                        
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d');
-                        ctx.drawImage(img, 0, 0, width, height);
-                        
-                        const compressedBase64 = canvas.toDataURL('image/jpeg', QUALITY);
-                        resolve({
-                            fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
-                            mimeType: "image/jpeg",
-                            data: compressedBase64.split(',')[1] // remove prefix
-                        });
-                    };
-                    img.onerror = reject;
-                };
-                reader.onerror = reject;
-            });
-        }
+        // Initialize form manager
+        const formManager = new FormManager();
     </script>
 </body>
 </html>
