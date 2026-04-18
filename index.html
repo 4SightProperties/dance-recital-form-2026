@@ -6,7 +6,6 @@
     <title>Boombox Dance Recital Ad Submission</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Keep all your existing CSS exactly the same until the script section */
         :root {
             --primary: #d63384;
             --primary-dark: #b02a5b;
@@ -119,26 +118,6 @@
             transition: all 0.3s ease;
         }
 
-        .form-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
-            transition: left 0.7s ease;
-        }
-
-        .form-container:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-5px);
-        }
-
-        .form-container:hover::before {
-            left: 100%;
-        }
-
         .form-section {
             margin-bottom: 40px;
             position: relative;
@@ -245,25 +224,10 @@
             overflow: hidden;
         }
 
-        .radio-label::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(214, 51, 132, 0.1), transparent);
-            transition: left 0.5s ease;
-        }
-
         .radio-label:hover {
             border-color: var(--primary);
             transform: translateY(-2px);
             box-shadow: 0 8px 25px rgba(214, 51, 132, 0.1);
-        }
-
-        .radio-label:hover::before {
-            left: 100%;
         }
 
         .radio-input {
@@ -304,6 +268,7 @@
             transition: all 0.3s ease;
         }
 
+        /* Fixed File Upload Layout */
         .file-upload-container {
             position: relative;
             border: 3px dashed var(--border);
@@ -314,6 +279,7 @@
             cursor: pointer;
             transition: all 0.3s ease;
             overflow: hidden;
+            margin-bottom: 20px; /* Space for preview below */
         }
 
         .file-upload-container:hover {
@@ -350,7 +316,6 @@
         .file-upload-hint {
             color: var(--text-secondary);
             font-size: 0.95rem;
-            margin-bottom: 20px;
         }
 
         .file-input {
@@ -363,12 +328,16 @@
             cursor: pointer;
         }
 
-        .file-list {
+        /* File Preview - OUTSIDE upload container */
+        .file-preview-section {
             margin-top: 20px;
-            text-align: left;
         }
 
-        .file-item {
+        .file-preview-list {
+            /* This will contain the uploaded files */
+        }
+
+        .preview-item {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -376,55 +345,62 @@
             background: rgba(214, 51, 132, 0.05);
             border-radius: 15px;
             margin-bottom: 10px;
+            border: 1px solid rgba(214, 51, 132, 0.1);
             transition: all 0.3s ease;
         }
 
-        .file-item:hover {
-            background: rgba(214, 51, 132, 0.1);
+        .preview-item:hover {
+            background: rgba(214, 51, 132, 0.08);
         }
 
-        .file-info {
+        .preview-info {
             display: flex;
             align-items: center;
             gap: 15px;
+            flex: 1;
         }
 
-        .file-icon-small {
-            font-size: 1.5rem;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
+        .preview-icon {
+            font-size: 1.8rem;
         }
 
-        .file-details {
-            color: var(--text-primary);
+        .preview-details {
+            flex: 1;
         }
 
-        .file-name {
+        .preview-name {
             font-weight: 500;
-            margin-bottom: 2px;
+            color: var(--text-primary);
+            margin-bottom: 3px;
+            font-size: 0.95rem;
         }
 
-        .file-size {
+        .preview-size {
             font-size: 0.8rem;
             color: var(--text-secondary);
         }
 
-        .remove-file {
-            background: none;
+        .remove-button {
+            background: var(--primary);
+            color: white;
             border: none;
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1.5rem;
-            transition: all 0.3s ease;
-            padding: 5px;
             border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .remove-file:hover {
-            color: var(--primary);
-            background: rgba(214, 51, 132, 0.1);
+        .remove-button:hover,
+        .remove-button:focus {
+            background: var(--primary-dark);
+            transform: scale(1.1);
         }
 
         .submit-btn {
@@ -444,6 +420,7 @@
             overflow: hidden;
             margin-top: 40px;
             box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
+            touch-action: manipulation;
         }
 
         .submit-btn:hover {
@@ -507,16 +484,26 @@
                 flex-direction: column;
             }
 
-            .file-item {
-                padding: 12px 15px;
+            .file-upload-container {
+                padding: 30px 20px;
             }
-            
+
             .file-upload-text {
                 font-size: 1.1rem;
             }
-            
+
             .file-upload-hint {
                 font-size: 0.85rem;
+            }
+
+            .preview-item {
+                padding: 12px 15px;
+            }
+
+            .remove-button {
+                width: 40px;
+                height: 40px;
+                font-size: 1.3rem;
             }
         }
     </style>
@@ -576,12 +563,17 @@ Love, Mom & Dad'"></textarea>
             <div class="form-section">
                 <h3 class="section-title">Photo Upload</h3>
                 <div class="form-group">
+                    <!-- Upload container -->
                     <div class="file-upload-container" id="fileUpload">
                         <div class="file-icon">📸</div>
                         <div class="file-upload-text">Drag & Drop Your Dance Photos</div>
                         <div class="file-upload-hint">or click here to browse your device<br>(JPG, PNG, GIF files)</div>
                         <input type="file" id="photos" name="photos" multiple accept="image/*" class="file-input" required>
-                        <div class="file-list" id="fileList"></div>
+                    </div>
+                    
+                    <!-- Preview section - SEPARATE from upload container -->
+                    <div class="file-preview-section">
+                        <div class="file-preview-list" id="filePreview"></div>
                     </div>
                 </div>
             </div>
@@ -608,257 +600,192 @@ Love, Mom & Dad'"></textarea>
         // Your Google Apps Script URL
         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyaMvwqs8y_2mcuDkxH_wCOr_GUiEDJ-Vn7tkPOgwMy3DdpfXw3DAXcKwGPwf9YqpOFGw/exec';
 
-        class FormManager {
-            constructor() {
-                this.selectedFiles = [];
-                this.initializeEventListeners();
-            }
+        let selectedFiles = [];
 
-            initializeEventListeners() {
-                const fileUpload = document.getElementById('fileUpload');
-                const fileInput = document.getElementById('photos');
-                const form = document.getElementById('submissionForm');
+        // Drag and drop functionality
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('photos');
 
-                // Drag and drop
-                fileUpload.addEventListener('dragover', this.handleDragOver.bind(this));
-                fileUpload.addEventListener('dragleave', this.handleDragLeave.bind(this));
-                fileUpload.addEventListener('drop', this.handleDrop.bind(this));
-                
-                // File input change
-                fileInput.addEventListener('change', this.handleFileSelect.bind(this));
-                
-                // Form submit
-                form.addEventListener('submit', this.handleSubmit.bind(this));
-                
-                // Click to upload
-                fileUpload.addEventListener('click', () => {
-                    fileInput.click();
-                });
-            }
+        fileUpload.addEventListener('dragover', handleDragOver);
+        fileUpload.addEventListener('dragleave', handleDragLeave);
+        fileUpload.addEventListener('drop', handleDrop);
+        fileUpload.addEventListener('click', () => fileInput.click());
+        fileInput.addEventListener('change', handleFileSelect);
 
-            handleDragOver(e) {
-                e.preventDefault();
-                document.getElementById('fileUpload').classList.add('drag-over');
-            }
-
-            handleDragLeave(e) {
-                e.preventDefault();
-                document.getElementById('fileUpload').classList.remove('drag-over');
-            }
-
-            handleDrop(e) {
-                e.preventDefault();
-                document.getElementById('fileUpload').classList.remove('drag-over');
-                const files = Array.from(e.dataTransfer.files);
-                this.addFiles(files);
-            }
-
-            handleFileSelect(e) {
-                const files = Array.from(e.target.files);
-                this.addFiles(files);
-            }
-
-            addFiles(newFiles) {
-                newFiles.forEach(file => {
-                    if (file.type.startsWith('image/') && 
-                        !this.selectedFiles.some(existing => 
-                            existing.name === file.name && existing.size === file.size
-                        )) {
-                        this.selectedFiles.push(file);
-                    }
-                });
-                this.renderFileList();
-            }
-
-            removeFile(index) {
-                this.selectedFiles.splice(index, 1);
-                this.renderFileList();
-            }
-
-            renderFileList() {
-                const fileList = document.getElementById('fileList');
-                fileList.innerHTML = '';
-
-                this.selectedFiles.forEach((file, index) => {
-                    const fileItem = document.createElement('div');
-                    fileItem.className = 'file-item';
-                    fileItem.innerHTML = `
-                        <div class="file-info">
-                            <div class="file-icon-small">🖼️</div>
-                            <div class="file-details">
-                                <div class="file-name">${file.name}</div>
-                                <div class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
-                            </div>
-                        </div>
-                        <button type="button" class="remove-file" data-index="${index}">×</button>
-                    `;
-                    fileList.appendChild(fileItem);
-
-                    // Add remove button event listener
-                    const removeBtn = fileItem.querySelector('.remove-file');
-                    removeBtn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        this.removeFile(parseInt(e.target.getAttribute('data-index')));
-                    });
-                });
-            }
-
-            async handleSubmit(e) {
-                e.preventDefault();
-                
-                if (this.selectedFiles.length === 0) {
-                    alert('Please upload at least one photo.');
-                    return;
-                }
-
-                const submitBtn = document.querySelector('.submit-btn');
-                const originalText = submitBtn.textContent;
-                const processingMsg = document.getElementById('processingMessage');
-                const successMsg = document.getElementById('successMessage');
-                
-                // Show processing state
-                submitBtn.textContent = 'Processing...';
-                submitBtn.disabled = true;
-                processingMsg.classList.add('show');
-                successMsg.classList.remove('show');
-                
-                try {
-                    const processedFiles = [];
-                    
-                    // Compress each image
-                    for (let file of this.selectedFiles) {
-                        const compressed = await this.compressImage(file);
-                        processedFiles.push(compressed);
-                    }
-                    
-                    const formData = {
-                        dancerName: document.getElementById('dancerName').value,
-                        parentName: document.getElementById('parentName').value,
-                        email: document.getElementById('email').value,
-                        pageSize: document.querySelector('input[name="pageSize"]:checked').value,
-                        message: document.getElementById('message').value,
-                        files: processedFiles
-                    };
-                    
-                    // Try mobile-friendly submission first, fallback to iframe method
-                    const success = await this.submitFormData(formData);
-                    
-                    if (success) {
-                        processingMsg.classList.remove('show');
-                        successMsg.classList.add('show');
-                        this.resetForm();
-                    } else {
-                        throw new Error('Submission failed');
-                    }
-                    
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    alert('Submission failed. Please try again.');
-                } finally {
-                    submitBtn.textContent = originalText;
-                    submitBtn.disabled = false;
-                    processingMsg.classList.remove('show');
-                }
-            }
-
-            async submitFormData(formData) {
-                try {
-                    // Try direct POST first (mobile-friendly)
-                    const response = await fetch(WEB_APP_URL, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                        },
-                        body: 'data=' + encodeURIComponent(JSON.stringify(formData)),
-                        mode: 'no-cors'
-                    });
-                    
-                    // Since mode is 'no-cors', we can't check response.ok
-                    // So we wait a bit and assume success if no error was thrown
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    return true;
-                    
-                } catch (error) {
-                    console.log('Direct POST failed, trying iframe method');
-                    
-                    // Fallback to iframe method
-                    return new Promise((resolve) => {
-                        const form = document.createElement('form');
-                        form.method = 'POST';
-                        form.action = WEB_APP_URL;
-                        form.style.display = 'none';
-                        
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'data';
-                        input.value = JSON.stringify(formData);
-                        form.appendChild(input);
-                        
-                        const iframe = document.createElement('iframe');
-                        iframe.style.display = 'none';
-                        iframe.name = 'submitFrame';
-                        form.target = 'submitFrame';
-                        
-                        document.body.appendChild(iframe);
-                        document.body.appendChild(form);
-                        
-                        iframe.onload = () => {
-                            setTimeout(() => {
-                                document.body.removeChild(iframe);
-                                document.body.removeChild(form);
-                                resolve(true);
-                            }, 1000);
-                        };
-                        
-                        form.submit();
-                    });
-                }
-            }
-
-            compressImage(file) {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = function (event) {
-                        const img = new Image();
-                        img.src = event.target.result;
-                        img.onload = function () {
-                            let width = img.width;
-                            let height = img.height;
-                            
-                            if (width > MAX_WIDTH) {
-                                height = height * (MAX_WIDTH / width);
-                                width = MAX_WIDTH;
-                            }
-                            
-                            const canvas = document.createElement('canvas');
-                            canvas.width = width;
-                            canvas.height = height;
-                            const ctx = canvas.getContext('2d');
-                            ctx.drawImage(img, 0, 0, width, height);
-                            
-                            const compressedBase64 = canvas.toDataURL('image/jpeg', QUALITY);
-                            resolve({
-                                fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
-                                mimeType: "image/jpeg",
-                                data: compressedBase64.split(',')[1]
-                            });
-                        };
-                        img.onerror = reject;
-                    };
-                    reader.onerror = reject;
-                });
-            }
-
-            resetForm() {
-                document.getElementById('submissionForm').reset();
-                this.selectedFiles = [];
-                this.renderFileList();
-            }
+        function handleDragOver(e) {
+            e.preventDefault();
+            fileUpload.classList.add('drag-over');
         }
 
-        // Initialize form manager
-        const formManager = new FormManager();
+        function handleDragLeave(e) {
+            e.preventDefault();
+            fileUpload.classList.remove('drag-over');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            fileUpload.classList.remove('drag-over');
+            const files = Array.from(e.dataTransfer.files);
+            addFiles(files);
+        }
+
+        function handleFileSelect(e) {
+            const files = Array.from(e.target.files);
+            addFiles(files);
+        }
+
+        function addFiles(newFiles) {
+            newFiles.forEach(file => {
+                if (file.type.startsWith('image/') && 
+                    !selectedFiles.some(existing => 
+                        existing.name === file.name && existing.size === file.size
+                    )) {
+                    selectedFiles.push(file);
+                }
+            });
+            renderFilePreview();
+            
+            // Clear file input to allow re-selecting same files
+            fileInput.value = '';
+        }
+
+        function removeFile(index) {
+            selectedFiles.splice(index, 1);
+            renderFilePreview();
+        }
+
+        function renderFilePreview() {
+            const preview = document.getElementById('filePreview');
+            preview.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const item = document.createElement('div');
+                item.className = 'preview-item';
+                item.innerHTML = `
+                    <div class="preview-info">
+                        <div class="preview-icon">🖼️</div>
+                        <div class="preview-details">
+                            <div class="preview-name">${file.name}</div>
+                            <div class="preview-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
+                        </div>
+                    </div>
+                    <button type="button" class="remove-button" onclick="removeFile(${index})">×</button>
+                `;
+                preview.appendChild(item);
+            });
+        }
+
+        document.getElementById('submissionForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            if (selectedFiles.length === 0) {
+                alert('Please select at least one photo.');
+                return;
+            }
+
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            const processingMsg = document.getElementById('processingMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            processingMsg.classList.add('show');
+            successMsg.classList.remove('show');
+            
+            try {
+                const processedFiles = [];
+                
+                for (let file of selectedFiles) {
+                    const compressed = await compressImage(file);
+                    processedFiles.push(compressed);
+                }
+                
+                const formData = {
+                    dancerName: document.getElementById('dancerName').value,
+                    parentName: document.getElementById('parentName').value,
+                    email: document.getElementById('email').value,
+                    pageSize: document.querySelector('input[name="pageSize"]:checked').value,
+                    message: document.getElementById('message').value,
+                    files: processedFiles
+                };
+                
+                await submitFormData(formData);
+                
+                processingMsg.classList.remove('show');
+                successMsg.classList.add('show');
+                resetForm();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Submission failed. Please try again.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                processingMsg.classList.remove('show');
+            }
+        });
+
+        async function submitFormData(formData) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = WEB_APP_URL;
+            form.style.display = 'none';
+            
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'data';
+            input.value = JSON.stringify(formData);
+            form.appendChild(input);
+            
+            document.body.appendChild(form);
+            form.submit();
+            
+            // Wait for submission
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            document.body.removeChild(form);
+        }
+
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function () {
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        if (width > MAX_WIDTH) {
+                            height = height * (MAX_WIDTH / width);
+                            width = MAX_WIDTH;
+                        }
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', QUALITY);
+                        resolve({
+                            fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                            mimeType: "image/jpeg",
+                            data: compressedBase64.split(',')[1]
+                        });
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
+
+        function resetForm() {
+            document.getElementById('submissionForm').reset();
+            selectedFiles = [];
+            renderFilePreview();
+        }
     </script>
 </body>
 </html>
