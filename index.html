@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dance Recital Ad Submission</title>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #d63384;
+            --primary-dark: #b02a5b;
+            --secondary: #fd7e14;
+            --accent: #ffc107;
+            --success: #198754;
+            --background: #fef7ff;
+            --surface: #ffffff;
+            --text-primary: #2d1b69;
+            --text-secondary: #6c757d;
+            --border: #e9ecef;
+            --shadow: 0 10px 30px rgba(214, 51, 132, 0.1);
+            --shadow-hover: 0 15px 40px rgba(214, 51, 132, 0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, var(--background) 0%, #fff5f8 50%, #f8f0ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--text-primary);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(214, 51, 132, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(253, 126, 20, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 193, 7, 0.05) 0%, transparent 50%);
+            z-index: -1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            33% { transform: translate(-20px, -10px) rotate(1deg); }
+            66% { transform: translate(20px, 10px) rotate(-1deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .header::before {
+            content: '🩰';
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 3rem;
+            filter: drop-shadow(0 4px 8px rgba(214, 51, 132, 0.3));
+            animation: bounce 3s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        .title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 3.5rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 40px 0 15px;
+            text-shadow: 0 2px 4px rgba(214, 51, 132, 0.1);
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .form-container {
+            background: var(--surface);
+            border-radius: 30px;
+            padding: 50px;
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(214, 51, 132, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .form-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.7s ease;
+        }
+
+        .form-container:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-5px);
+        }
+
+        .form-container:hover::before {
+            left: 100%;
+        }
+
+        .form-section {
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .section-title {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 25px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            border-radius: 2px;
+            animation: shimmer 2s ease-in-out infinite;
+        }
+
+        @keyframes shimmer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .form-group {
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            transition: all 0.3s ease;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 18px 25px;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            font-size: 1rem;
+            font-family: inherit;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(214, 51, 132, 0.1);
+            transform: translateY(-2px);
+            background: white;
+        }
+
+        .form-input::placeholder {
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .radio-container {
+            display: flex;
+            gap: 20px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .radio-item {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .radio-label {
+            display: flex;
+            align-items: center;
+            padding: 20px;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .radio-label::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(214, 51, 132, 0.1), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .radio-label:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(214, 51, 132, 0.1);
+        }
+
+        .radio-label:hover::before {
+            left: 100%;
+        }
+
+        .radio-input {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            margin-right: 15px;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .radio-input:checked {
+            border-color: var(--primary);
+            background: var(--primary);
+        }
+
+        .radio-input:checked::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .radio-input:checked + .radio-text {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .radio-text {
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-container {
+            position: relative;
+            border: 3px dashed var(--border);
+            border-radius: 25px;
+            padding: 50px 30px;
+            text-align: center;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 247, 255, 0.9));
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .file-upload-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, rgba(214, 51, 132, 0.05), rgba(253, 126, 20, 0.03));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .file-upload-container:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
+        }
+
+        .file-upload-container:hover::before {
+            opacity: 1;
+        }
+
+        .file-upload-container.drag-over {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(253, 126, 20, 0.05));
+            transform: scale(1.02);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .file-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .file-upload-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-hint {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .file-list {
+            margin-top: 30px;
+            display: none;
+        }
+
+        .file-list.has-files {
+            display: block;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .file-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.1);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .file-icon-small {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .file-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .file-name {
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .file-size {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .file-remove {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+
+        .file-remove:hover {
+            background: rgba(220, 53, 69, 0.1);
+            color: #dc3545;
+            transform: scale(1.1);
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 20px 40px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+            margin-top: 40px;
+            box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(214, 51, 132, 0.4);
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .submit-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            color: var(--primary);
+            margin-top: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .success-message {
+            display: none;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(25, 135, 84, 0.1), rgba(25, 135, 84, 0.05));
+            border: 2px solid var(--success);
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 30px;
+            color: var(--success);
+            font-weight: 600;
+        }
+
+        .success-message.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .error-message {
+            display: none;
+            padding: 25px;
+            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
+            border: 2px solid #dc3545;
+            border-radius: 20px;
+            text-align: center;
+            margin-top: 30px;
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .error-message.show {
+            display: block;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .title {
+                font-size: 2.5rem;
+            }
+
+            .form-container {
+                padding: 30px 20px;
+                border-radius: 20px;
+            }
+
+            .radio-container {
+                flex-direction: column;
+            }
+
+            .file-upload-container {
+                padding: 30px 20px;
+            }
+
+            .submit-btn {
+                font-size: 1rem;
+                letter-spacing: 1px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Dance Recital Memories</h1>
+            <p class="subtitle">Share your dancer's special moments for our recital booklet</p>
+        </div>
+
+        <form id="submissionForm" class="form-container">
+            <div class="form-section">
+                <h3 class="section-title">Dancer Information</h3>
+                <div class="form-group">
+                    <label for="dancerName" class="form-label">Dancer's Full Name *</label>
+                    <input type="text" id="dancerName" name="dancerName" class="form-input" placeholder="Enter your dancer's full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="parentName" class="form-label">Your Name (Parent/Guardian) *</label>
+                    <input type="text" id="parentName" name="parentName" class="form-input" placeholder="Enter your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email" class="form-label">Contact Email *</label>
+                    <input type="email" id="email" name="email" class="form-input" placeholder="your.email@example.com" required>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">Ad Preferences</h3>
+                <div class="form-group">
+                    <label class="form-label">Page Size Preference *</label>
+                    <div class="radio-container">
+                        <div class="radio-item">
+                            <label class="radio-label">
+                                <input type="radio" name="pageSize" value="full" class="radio-input" required>
+                                <span class="radio-text">Full Page</span>
+                            </label>
+                        </div>
+                        <div class="radio-item">
+                            <label class="radio-label">
+                                <input type="radio" name="pageSize" value="half" class="radio-input" required>
+                                <span class="radio-text">Half Page</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="message" class="form-label">Message, Quote, or Dedication</label>
+                    <textarea id="message" name="message" class="form-input form-textarea" placeholder="Enter a special message, inspiring quote, or heartfelt dedication for your dancer... (optional)"></textarea>
+                </div>
+            </div>
+
+            <div class="form-section">
+                <h3 class="section-title">Photo Upload</h3>
+                <div class="form-group">
+                    <div class="file-upload-container" id="fileUpload">
+                        <input type="file" id="photoFiles" name="photoFiles" multiple accept="image/*" class="file-input">
+                        <div class="file-upload-content">
+                            <div class="file-icon">📸</div>
+                            <div class="file-upload-text">Drag & Drop Your Dance Photos</div>
+                            <div class="file-upload-hint">or click here to browse your device<br>(JPG, PNG, GIF files)</div>
+                        </div>
+                    </div>
+                    <div class="file-list" id="fileList"></div>
+                </div>
+            </div>
+
+            <button type="submit" class="submit-btn">✨ Submit Memories ✨</button>
+            
+            <div class="loading" id="loading">
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">📤 Uploading your memories...</div>
+                <div style="font-size: 0.9rem; opacity: 0.7;">This may take a moment for large photos</div>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                <div style="font-size: 1.5rem; margin-bottom: 10px;">🎉 Success!</div>
+                <div>Your dance memories have been submitted successfully. We'll be in touch if we need anything else!</div>
+            </div>
+            
+            <div class="error-message" id="errorMessage">
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">❌ Submission Failed</div>
+                <div id="errorText">Please try again or contact us for assistance.</div>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // NOTE: You'll need to replace 'YOUR_GOOGLE_APPS_SCRIPT_URL' with your actual deployed script URL
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtCDZirOLMJtdpcQR2QR_ZGxzKSWEpbTyOFidG2-TsIn1MuEmXyYuHirikLfHU7cBP_w/exec';
+
+        class DanceRecitalForm {
+            constructor() {
+                this.selectedFiles = [];
+                this.initializeEventListeners();
+            }
+
+            initializeEventListeners() {
+                const form = document.getElementById('submissionForm');
+                const fileUpload = document.getElementById('fileUpload');
+                const fileInput = document.getElementById('photoFiles');
+
+                form.addEventListener('submit', this.handleSubmit.bind(this));
+                fileInput.addEventListener('change', this.handleFileSelect.bind(this));
+                fileUpload.addEventListener('dragover', this.handleDragOver.bind(this));
+                fileUpload.addEventListener('dragleave', this.handleDragLeave.bind(this));
+                fileUpload.addEventListener('drop', this.handleDrop.bind(this));
+            }
+
+            handleSubmit(e) {
+                e.preventDefault();
+                
+                if (this.selectedFiles.length === 0) {
+                    alert('Please upload at least one photo.');
+                    return;
+                }
+
+                this.showLoading(true);
+                this.hideMessages();
+
+                const formData = new FormData();
+                const form = e.target;
+
+                // Add form fields
+                formData.append('dancerName', form.dancerName.value);
+                formData.append('parentName', form.parentName.value);
+                formData.append('email', form.email.value);
+                formData.append('pageSize', form.pageSize.value);
+                formData.append('message', form.message.value);
+
+                // Add files
+                this.selectedFiles.forEach((file, index) => {
+                    formData.append(`photo_${index}`, file);
+                });
+
+                this.submitToGoogleScript(formData);
+            }
+
+            async submitToGoogleScript(formData) {
+                try {
+                    const response = await fetch(SCRIPT_URL, {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        this.showSuccess();
+                        this.resetForm();
+                    } else {
+                        this.showError(result.error || 'Submission failed. Please try again.');
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    this.showError('Network error. Please check your connection and try again.');
+                } finally {
+                    this.showLoading(false);
+                }
+            }
+
+            handleFileSelect(e) {
+                const files = Array.from(e.target.files);
+                this.addFiles(files);
+            }
+
+            handleDragOver(e) {
+                e.preventDefault();
+                e.currentTarget.classList.add('drag-over');
+            }
+
+            handleDragLeave(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('drag-over');
+            }
+
+            handleDrop(e) {
+                e.preventDefault();
+                e.currentTarget.classList.remove('drag-over');
+                
+                const files = Array.from(e.dataTransfer.files).filter(file => 
+                    file.type.startsWith('image/')
+                );
+                
+                this.addFiles(files);
+            }
+
+            addFiles(newFiles) {
+                newFiles.forEach(file => {
+                    if (file.type.startsWith('image/') && 
+                        !this.selectedFiles.some(existing => 
+                            existing.name === file.name && existing.size === file.size
+                        )) {
+                        this.selectedFiles.push(file);
+                    }
+                });
+
+                this.renderFileList();
+            }
+
+            removeFile(index) {
+                this.selectedFiles.splice(index, 1);
+                this.renderFileList();
+            }
+
+            renderFileList() {
+                const fileList = document.getElementById('fileList');
+                
+                if (this.selectedFiles.length === 0) {
+                    fileList.classList.remove('has-files');
+                    return;
+                }
+
+                fileList.classList.add('has-files');
+                fileList.innerHTML = this.selectedFiles.map((file, index) => `
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon-small">IMG</div>
+                            <div class="file-details">
+                                <div class="file-name">${file.name}</div>
+                                <div class="file-size">${this.formatFileSize(file.size)}</div>
+                            </div>
+                        </div>
+                        <button type="button" class="file-remove" onclick="formManager.removeFile(${index})" title="Remove file">×</button>
+                    </div>
+                `).join('');
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            showLoading(show) {
+                const loading = document.getElementById('loading');
+                const submitBtn = document.querySelector('.submit-btn');
+                
+                if (show) {
+                    loading.classList.add('show');
+                    submitBtn.disabled = true;
+                } else {
+                    loading.classList.remove('show');
+                    submitBtn.disabled = false;
+                }
+            }
+
+            showSuccess() {
+                document.getElementById('successMessage').classList.add('show');
+            }
+
+            showError(message) {
+                const errorMessage = document.getElementById('errorMessage');
+                const errorText = document.getElementById('errorText');
+                errorText.textContent = message;
+                errorMessage.classList.add('show');
+            }
+
+            hideMessages() {
+                document.getElementById('successMessage').classList.remove('show');
+                document.getElementById('errorMessage').classList.remove('show');
+            }
+
+            resetForm() {
+                document.getElementById('submissionForm').reset();
+                this.selectedFiles = [];
+                this.renderFileList();
+            }
+        }
+
+        // Initialize the form
+        const formManager = new DanceRecitalForm();
+
+        // Show setup instructions if script URL is not configured
+        if (SCRIPT_URL === 'YOUR_GOOGLE_APPS_SCRIPT_URL') {
+            setTimeout(() => {
+                alert('Setup Required: Please configure the Google Apps Script URL in the JavaScript code before using this form.');
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
