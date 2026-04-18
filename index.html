@@ -714,15 +714,19 @@ Love, Mom & Dad'"></textarea>
 
             handleSubmit(e) {
                 e.preventDefault();
-    
+                
+                // DEBUG: Check if files are selected
+                console.log('Selected files count:', this.selectedFiles.length);
+                console.log('Selected files:', this.selectedFiles);
+                
                 if (this.selectedFiles.length === 0) {
                     alert('Please upload at least one photo.');
                     return;
                 }
-
+            
                 this.showLoading(true);
                 this.hideMessages();
-
+            
                 const form = e.target;
             
                 // Create FormData and add form fields
@@ -733,10 +737,17 @@ Love, Mom & Dad'"></textarea>
                 formData.append('pageSize', form.pageSize.value);
                 formData.append('message', form.message.value);
             
-                // FIXED: Add files with specific naming for Google Apps Script
+                // Add files with debugging
                 this.selectedFiles.forEach((file, index) => {
+                    console.log(`Adding file ${index}:`, file.name, file.size);
                     formData.append(`photo_${index}`, file, file.name);
                 });
+            
+                // DEBUG: Check FormData contents
+                console.log('FormData entries:');
+                for (let [key, value] of formData.entries()) {
+                    console.log(key, ':', value);
+                }
             
                 this.submitToGoogleScript(formData);
             }
