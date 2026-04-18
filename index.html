@@ -310,7 +310,6 @@
             padding: 50px 30px;
             text-align: center;
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 247, 255, 0.9));
-            cursor: pointer;
             transition: all 0.3s ease;
             overflow: hidden;
         }
@@ -319,6 +318,35 @@
             border-color: var(--primary);
             transform: translateY(-3px);
             box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
+        }
+
+        .file-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .file-upload-text {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 10px;
+        }
+
+        .file-upload-hint {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 20px;
         }
 
         .file-input {
@@ -470,9 +498,10 @@ Love, Mom & Dad'"></textarea>
                 <h3 class="section-title">Photo Upload</h3>
                 <div class="form-group">
                     <div class="file-upload-container">
-                        <label for="photos" class="form-label">Upload Your Dance Photos</label>
+                        <div class="file-icon">📸</div>
+                        <div class="file-upload-text">Drag & Drop Your Dance Photos</div>
+                        <div class="file-upload-hint">or click here to browse your device<br>(JPG, PNG, GIF files)</div>
                         <input type="file" id="photos" name="photos" multiple accept="image/*" class="file-input" required>
-                        <p style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">Select multiple photos (JPG, PNG, GIF) - will be automatically optimized</p>
                     </div>
                 </div>
             </div>
@@ -496,8 +525,8 @@ Love, Mom & Dad'"></textarea>
         const MAX_WIDTH = 2000;       // good balance for print
         const QUALITY = 0.7;          // compression level (0.6–0.8 ideal)
 
-        // Your Google Apps Script URL
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyTe4bE-QLUcB3qybbBJNZLSRBwkqIzdt1r8zhn1lp0jc4wDNIXZ9UVzeU-sBShVzlTIg/exec';
+        // Your Google Apps Script URL - UPDATE THIS!
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyaMvwqs8y_2mcuDkxH_wCOr_GUiEDJ-Vn7tkPOgwMy3DdpfXw3DAXcKwGPwf9YqpOFGw/exec';
 
         document.getElementById('submissionForm').addEventListener('submit', handleSubmit);
 
@@ -535,23 +564,13 @@ Love, Mom & Dad'"></textarea>
                     files: processedFiles
                 };
                 
-                const response = await fetch(WEB_APP_URL, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(formData)
-                });
+                // Use form submission to bypass CORS
+                await submitViaForm(formData);
                 
-                const result = await response.json();
-                
-                if (result.success) {
-                    processingMsg.classList.remove('show');
-                    successMsg.classList.add('show');
-                    document.getElementById('submissionForm').reset();
-                } else {
-                    alert('Submission failed: ' + result.error);
-                }
+                // Show success
+                processingMsg.classList.remove('show');
+                successMsg.classList.add('show');
+                document.getElementById('submissionForm').reset();
                 
             } catch (error) {
                 console.error('Submission error:', error);
@@ -561,6 +580,43 @@ Love, Mom & Dad'"></textarea>
                 submitBtn.disabled = false;
                 processingMsg.classList.remove('show');
             }
+        }
+
+        function submitViaForm(formData) {
+            return new Promise((resolve) => {
+                // Create hidden form
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = WEB_APP_URL;
+                form.style.display = 'none';
+                
+                // Add JSON data as hidden input
+                const input = document.createElement('input');
+                input.type = 'hidden';
+                input.name = 'data';
+                input.value = JSON.stringify(formData);
+                form.appendChild(input);
+                
+                // Submit form in hidden iframe
+                const iframe = document.createElement('iframe');
+                iframe.style.display = 'none';
+                iframe.name = 'submitFrame';
+                form.target = 'submitFrame';
+                
+                document.body.appendChild(iframe);
+                document.body.appendChild(form);
+                
+                // Clean up after submission
+                iframe.onload = () => {
+                    setTimeout(() => {
+                        document.body.removeChild(iframe);
+                        document.body.removeChild(form);
+                        resolve();
+                    }, 1000);
+                };
+                
+                form.submit();
+            });
         }
 
         function compressImage(file) {
