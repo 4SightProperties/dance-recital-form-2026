@@ -742,6 +742,7 @@
                     const response = await fetch(SCRIPT_URL, {
                         method: 'POST',
                         body: formData
+                        redirect: 'follow'
                     });
 
                     const result = await response.json();
