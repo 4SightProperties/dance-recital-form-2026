@@ -696,7 +696,11 @@
                 const form = document.getElementById('submissionForm');
                 const fileUpload = document.getElementById('fileUpload');
                 const fileInput = document.getElementById('photoFiles');
-
+                // Add direct click handler for upload area
+               fileUpload.addEventListener('click', function(e) {
+                   if (e.target === fileInput) return; // Don't trigger if clicking the actual input
+                   fileInput.click();
+               });
                 form.addEventListener('submit', this.handleSubmit.bind(this));
                 fileInput.addEventListener('change', this.handleFileSelect.bind(this));
                 fileUpload.addEventListener('dragover', this.handleDragOver.bind(this));
