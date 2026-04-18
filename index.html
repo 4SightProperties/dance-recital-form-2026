@@ -6,6 +6,7 @@
     <title>Boombox Dance Recital Ad Submission</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Keep all your existing CSS exactly the same until the script section */
         :root {
             --primary: #d63384;
             --primary-dark: #b02a5b;
@@ -509,6 +510,14 @@
             .file-item {
                 padding: 12px 15px;
             }
+            
+            .file-upload-text {
+                font-size: 1.1rem;
+            }
+            
+            .file-upload-hint {
+                font-size: 0.85rem;
+            }
         }
     </style>
 </head>
@@ -620,6 +629,11 @@ Love, Mom & Dad'"></textarea>
                 
                 // Form submit
                 form.addEventListener('submit', this.handleSubmit.bind(this));
+                
+                // Click to upload
+                fileUpload.addEventListener('click', () => {
+                    fileInput.click();
+                });
             }
 
             handleDragOver(e) {
@@ -676,9 +690,16 @@ Love, Mom & Dad'"></textarea>
                                 <div class="file-size">${(file.size / 1024 / 1024).toFixed(2)} MB</div>
                             </div>
                         </div>
-                        <button type="button" class="remove-file" onclick="formManager.removeFile(${index})">×</button>
+                        <button type="button" class="remove-file" data-index="${index}">×</button>
                     `;
                     fileList.appendChild(fileItem);
+
+                    // Add remove button event listener
+                    const removeBtn = fileItem.querySelector('.remove-file');
+                    removeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.removeFile(parseInt(e.target.getAttribute('data-index')));
+                    });
                 });
             }
 
@@ -719,13 +740,16 @@ Love, Mom & Dad'"></textarea>
                         files: processedFiles
                     };
                     
-                    // Use form submission to bypass CORS
-                    await this.submitViaForm(formData);
+                    // Try mobile-friendly submission first, fallback to iframe method
+                    const success = await this.submitFormData(formData);
                     
-                    // Show success
-                    processingMsg.classList.remove('show');
-                    successMsg.classList.add('show');
-                    this.resetForm();
+                    if (success) {
+                        processingMsg.classList.remove('show');
+                        successMsg.classList.add('show');
+                        this.resetForm();
+                    } else {
+                        throw new Error('Submission failed');
+                    }
                     
                 } catch (error) {
                     console.error('Submission error:', error);
@@ -737,41 +761,58 @@ Love, Mom & Dad'"></textarea>
                 }
             }
 
-            submitViaForm(formData) {
-                return new Promise((resolve) => {
-                    // Create hidden form
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = WEB_APP_URL;
-                    form.style.display = 'none';
+            async submitFormData(formData) {
+                try {
+                    // Try direct POST first (mobile-friendly)
+                    const response = await fetch(WEB_APP_URL, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/x-www-form-urlencoded',
+                        },
+                        body: 'data=' + encodeURIComponent(JSON.stringify(formData)),
+                        mode: 'no-cors'
+                    });
                     
-                    // Add JSON data as hidden input
-                    const input = document.createElement('input');
-                    input.type = 'hidden';
-                    input.name = 'data';
-                    input.value = JSON.stringify(formData);
-                    form.appendChild(input);
+                    // Since mode is 'no-cors', we can't check response.ok
+                    // So we wait a bit and assume success if no error was thrown
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    return true;
                     
-                    // Submit form in hidden iframe
-                    const iframe = document.createElement('iframe');
-                    iframe.style.display = 'none';
-                    iframe.name = 'submitFrame';
-                    form.target = 'submitFrame';
+                } catch (error) {
+                    console.log('Direct POST failed, trying iframe method');
                     
-                    document.body.appendChild(iframe);
-                    document.body.appendChild(form);
-                    
-                    // Clean up after submission
-                    iframe.onload = () => {
-                        setTimeout(() => {
-                            document.body.removeChild(iframe);
-                            document.body.removeChild(form);
-                            resolve();
-                        }, 1000);
-                    };
-                    
-                    form.submit();
-                });
+                    // Fallback to iframe method
+                    return new Promise((resolve) => {
+                        const form = document.createElement('form');
+                        form.method = 'POST';
+                        form.action = WEB_APP_URL;
+                        form.style.display = 'none';
+                        
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'data';
+                        input.value = JSON.stringify(formData);
+                        form.appendChild(input);
+                        
+                        const iframe = document.createElement('iframe');
+                        iframe.style.display = 'none';
+                        iframe.name = 'submitFrame';
+                        form.target = 'submitFrame';
+                        
+                        document.body.appendChild(iframe);
+                        document.body.appendChild(form);
+                        
+                        iframe.onload = () => {
+                            setTimeout(() => {
+                                document.body.removeChild(iframe);
+                                document.body.removeChild(form);
+                                resolve(true);
+                            }, 1000);
+                        };
+                        
+                        form.submit();
+                    });
+                }
             }
 
             compressImage(file) {
