@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dance Recital Ad Submission</title>
+    <title>Boombox Dance Recital Ad Submission</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -315,154 +315,21 @@
             overflow: hidden;
         }
 
-        .file-upload-container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, rgba(214, 51, 132, 0.05), rgba(253, 126, 20, 0.03));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
         .file-upload-container:hover {
             border-color: var(--primary);
             transform: translateY(-3px);
             box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
         }
 
-        .file-upload-container:hover::before {
-            opacity: 1;
-        }
-
-        .file-upload-container.drag-over {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(253, 126, 20, 0.05));
-            transform: scale(1.02);
-        }
-
         .file-input {
-            position: absolute;
-            top: 0;
-            left: 0;
             width: 100%;
-            height: 100%;
-            opacity: 0;
-            cursor: pointer;
-        }
-
-        .file-upload-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .file-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            background: linear-gradient(45deg, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: block;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .file-upload-text {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 10px;
-        }
-
-        .file-upload-hint {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .file-list {
-            margin-top: 30px;
-            display: none;
-        }
-
-        .file-list.has-files {
-            display: block;
-        }
-
-        .file-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 15px 20px;
+            padding: 18px 25px;
+            border: 2px solid var(--border);
+            border-radius: 20px;
+            font-size: 1rem;
+            font-family: inherit;
             background: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            margin-bottom: 10px;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .file-item:hover {
-            transform: translateX(5px);
-            box-shadow: 0 5px 15px rgba(214, 51, 132, 0.1);
-        }
-
-        .file-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .file-icon-small {
-            width: 40px;
-            height: 40px;
-            background: linear-gradient(45deg, var(--primary), var(--accent));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: 600;
-            font-size: 0.8rem;
-        }
-
-        .file-details {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .file-name {
-            font-weight: 500;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-        }
-
-        .file-size {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-        }
-
-        .file-remove {
-            background: none;
-            border: none;
-            color: var(--text-secondary);
             cursor: pointer;
-            padding: 8px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            font-size: 1.2rem;
-        }
-
-        .file-remove:hover {
-            background: rgba(220, 53, 69, 0.1);
-            color: #dc3545;
-            transform: scale(1.1);
         }
 
         .submit-btn {
@@ -484,45 +351,15 @@
             box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
         }
 
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.6s ease;
-        }
-
         .submit-btn:hover {
             transform: translateY(-3px);
             box-shadow: 0 15px 40px rgba(214, 51, 132, 0.4);
-        }
-
-        .submit-btn:hover::before {
-            left: 100%;
-        }
-
-        .submit-btn:active {
-            transform: translateY(-1px);
         }
 
         .submit-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
             transform: none;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            color: var(--primary);
-            margin-top: 20px;
-        }
-
-        .loading.show {
-            display: block;
         }
 
         .success-message {
@@ -539,35 +376,22 @@
 
         .success-message.show {
             display: block;
-            animation: slideIn 0.5s ease-out;
         }
 
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .error-message {
+        .processing-message {
             display: none;
             padding: 25px;
-            background: linear-gradient(135deg, rgba(220, 53, 69, 0.1), rgba(220, 53, 69, 0.05));
-            border: 2px solid #dc3545;
+            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(253, 126, 20, 0.05));
+            border: 2px solid var(--primary);
             border-radius: 20px;
             text-align: center;
             margin-top: 30px;
-            color: #dc3545;
+            color: var(--primary);
             font-weight: 600;
         }
 
-        .error-message.show {
+        .processing-message.show {
             display: block;
-            animation: slideIn 0.5s ease-out;
         }
 
         @media (max-width: 768px) {
@@ -587,22 +411,13 @@
             .radio-container {
                 flex-direction: column;
             }
-
-            .file-upload-container {
-                padding: 30px 20px;
-            }
-
-            .submit-btn {
-                font-size: 1rem;
-                letter-spacing: 1px;
-            }
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-            <h1 class="title">Boombox Dance Recital Ads</h1>
+            <h1 class="title">Boombox Dance Recital Memories</h1>
             <p class="subtitle">Share your dancer's special moments for our recital booklet</p>
         </div>
 
@@ -654,272 +469,135 @@ Love, Mom & Dad'"></textarea>
             <div class="form-section">
                 <h3 class="section-title">Photo Upload</h3>
                 <div class="form-group">
-                    <div class="file-upload-container" id="fileUpload">
-                        <input type="file" id="photoFiles" name="photoFiles" multiple accept="image/*" class="file-input">
-                        <div class="file-upload-content">
-                            <div class="file-icon">📸</div>
-                            <div class="file-upload-text">Drag & Drop Your Dance Photos</div>
-                            <div class="file-upload-hint">or click here to browse your device<br>(JPG, PNG, GIF files)</div>
-                        </div>
+                    <div class="file-upload-container">
+                        <label for="photos" class="form-label">Upload Your Dance Photos</label>
+                        <input type="file" id="photos" name="photos" multiple accept="image/*" class="file-input" required>
+                        <p style="margin-top: 10px; color: var(--text-secondary); font-size: 0.9rem;">Select multiple photos (JPG, PNG, GIF) - will be automatically optimized</p>
                     </div>
-                    <div class="file-list" id="fileList"></div>
                 </div>
             </div>
 
             <button type="submit" class="submit-btn">✨ Submit Memories ✨</button>
             
-            <div class="loading" id="loading">
-                <div style="font-size: 1.2rem; margin-bottom: 10px;">📤 Uploading your memories...</div>
-                <div style="font-size: 0.9rem; opacity: 0.7;">This may take a moment for large photos</div>
+            <div class="processing-message" id="processingMessage">
+                <div style="font-size: 1.2rem; margin-bottom: 10px;">🔄 Processing Photos...</div>
+                <div>Optimizing your images for the best quality. This may take a moment.</div>
             </div>
             
             <div class="success-message" id="successMessage">
                 <div style="font-size: 1.5rem; margin-bottom: 10px;">🎉 Success!</div>
-                <div>Your dance memories have been submitted successfully. We'll be in touch if we need anything else!</div>
-            </div>
-            
-            <div class="error-message" id="errorMessage">
-                <div style="font-size: 1.2rem; margin-bottom: 10px;">❌ Submission Failed</div>
-                <div id="errorText">Please try again or contact us for assistance.</div>
+                <div>Your dance memories have been submitted successfully!</div>
             </div>
         </form>
     </div>
 
     <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAT8Jz5lGPs2F3BdQ28r1M45eTKnHbkep1VHIkXCOYTwCDbEus1GKwgA5lu6KSIaqfEw/exec';
+        // Image compression settings
+        const MAX_WIDTH = 2000;       // good balance for print
+        const QUALITY = 0.7;          // compression level (0.6–0.8 ideal)
 
-        class DanceRecitalForm {
-            constructor() {
-                this.selectedFiles = [];
-                this.initializeEventListeners();
-            }
+        // Your Google Apps Script URL
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyTe4bE-QLUcB3qybbBJNZLSRBwkqIzdt1r8zhn1lp0jc4wDNIXZ9UVzeU-sBShVzlTIg/exec';
 
-            initializeEventListeners() {
-                const form = document.getElementById('submissionForm');
-                const fileUpload = document.getElementById('fileUpload');
-                const fileInput = document.getElementById('photoFiles');
+        document.getElementById('submissionForm').addEventListener('submit', handleSubmit);
 
-                // Add direct click handler for upload area
-                fileUpload.addEventListener('click', function(e) {
-                    if (e.target === fileInput) return; // Don't trigger if clicking the actual input
-                    fileInput.click();
-                });
-
-                form.addEventListener('submit', this.handleSubmit.bind(this));
-                fileInput.addEventListener('change', this.handleFileSelect.bind(this));
-                fileUpload.addEventListener('dragover', this.handleDragOver.bind(this));
-                fileUpload.addEventListener('dragleave', this.handleDragLeave.bind(this));
-                fileUpload.addEventListener('drop', this.handleDrop.bind(this));
-            }
-
-            handleSubmit(e) {
-                e.preventDefault();
+        async function handleSubmit(event) {
+            event.preventDefault();
+            
+            const submitBtn = document.querySelector('.submit-btn');
+            const originalText = submitBtn.textContent;
+            const processingMsg = document.getElementById('processingMessage');
+            const successMsg = document.getElementById('successMessage');
+            
+            // Show processing state
+            submitBtn.textContent = 'Processing...';
+            submitBtn.disabled = true;
+            processingMsg.classList.add('show');
+            successMsg.classList.remove('show');
+            
+            try {
+                const filesInput = document.getElementById('photos');
+                const files = filesInput.files;
+                const processedFiles = [];
                 
-                // DEBUG: Check if files are selected
-                console.log('Selected files count:', this.selectedFiles.length);
-                console.log('Selected files:', this.selectedFiles);
-                
-                if (this.selectedFiles.length === 0) {
-                    alert('Please upload at least one photo.');
-                    return;
+                // Compress each image
+                for (let file of files) {
+                    const compressed = await compressImage(file);
+                    processedFiles.push(compressed);
                 }
-            
-                this.showLoading(true);
-                this.hideMessages();
-            
-                const form = e.target;
-            
-                // Create FormData and add form fields
-                const formData = new FormData();
-                formData.append('dancerName', form.dancerName.value);
-                formData.append('parentName', form.parentName.value);
-                formData.append('email', form.email.value);
-                formData.append('pageSize', form.pageSize.value);
-                formData.append('message', form.message.value);
-            
-                // Add files with debugging
-                this.selectedFiles.forEach((file, index) => {
-                    console.log(`Adding file ${index}:`, file.name, file.size);
-                    formData.append(`photo_${index}`, file, file.name);
-                });
-            
-                // DEBUG: Check FormData contents
-                console.log('FormData entries:');
-                for (let [key, value] of formData.entries()) {
-                    console.log(key, ':', value);
-                }
-            
-                this.submitToGoogleScript(formData);
-            }
-
-            async submitToGoogleScript(formData) {
-                try {
-                    const response = await fetch(SCRIPT_URL, {
-                        method: 'POST',
-                        body: formData
-                    });
-
-                    const responseText = await response.text();
-                    console.log('Response:', responseText);
-
-                    let result;
-                    try {
-                        result = JSON.parse(responseText);
-                    } catch (e) {
-                        // If response isn't JSON, consider it successful
-                        console.log('Non-JSON response, assuming success');
-                        result = { success: true };
-                    }
-
-                    if (result.success) {
-                        this.showSuccess();
-                        this.resetForm();
-                    } else {
-                        this.showError(result.error || 'Submission failed. Please try again.');
-                    }
-
-                } catch (error) {
-                    console.error('Submission error:', error);
-                    this.showError('Network error. Please check your connection and try again.');
-                } finally {
-                    this.showLoading(false);
-                }
-            }
-
-            handleFileSelect(e) {
-                console.log('handleFileSelect called');
-                const files = Array.from(e.target.files);
-                console.log('Files from input:', files.length);
-                this.addFiles(files);
-            }
-
-            handleDragOver(e) {
-                e.preventDefault();
-                e.currentTarget.classList.add('drag-over');
-            }
-
-            handleDragLeave(e) {
-                e.preventDefault();
-                e.currentTarget.classList.remove('drag-over');
-            }
-
-            handleDrop(e) {
-                e.preventDefault();
-                e.currentTarget.classList.remove('drag-over');
                 
-                const files = Array.from(e.dataTransfer.files).filter(file => 
-                    file.type.startsWith('image/')
-                );
+                const formData = {
+                    dancerName: document.getElementById('dancerName').value,
+                    parentName: document.getElementById('parentName').value,
+                    email: document.getElementById('email').value,
+                    pageSize: document.querySelector('input[name="pageSize"]:checked').value,
+                    message: document.getElementById('message').value,
+                    files: processedFiles
+                };
                 
-                this.addFiles(files);
-            }
-
-            addFiles(newFiles) {
-                console.log('=== addFiles DEBUG ===');
-                console.log('addFiles called with:', newFiles.length, 'files');
-                console.log('Current selectedFiles count:', this.selectedFiles.length);
-                
-                newFiles.forEach((file, index) => {
-                    console.log(`Processing file ${index}:`, file.name, 'Type:', file.type, 'Size:', file.size);
-                    
-                    if (file.type.startsWith('image/')) {
-                        console.log('✓ File is an image');
-                        
-                        const isDuplicate = this.selectedFiles.some(existing => 
-                            existing.name === file.name && existing.size === file.size
-                        );
-                        
-                        if (!isDuplicate) {
-                            console.log('✓ File is not a duplicate, adding to selectedFiles');
-                            this.selectedFiles.push(file);
-                            console.log('selectedFiles length after adding:', this.selectedFiles.length);
-                        } else {
-                            console.log('✗ File is a duplicate, skipping');
-                        }
-                    } else {
-                        console.log('✗ File is not an image, skipping');
-                    }
+                const response = await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
                 });
                 
-                console.log('Final selectedFiles count:', this.selectedFiles.length);
-                console.log('=== End addFiles DEBUG ===');
-                this.renderFileList();
-            }
-
-            removeFile(index) {
-                this.selectedFiles.splice(index, 1);
-                this.renderFileList();
-            }
-
-            renderFileList() {
-                const fileList = document.getElementById('fileList');
+                const result = await response.json();
                 
-                if (this.selectedFiles.length === 0) {
-                    fileList.classList.remove('has-files');
-                    return;
-                }
-
-                fileList.classList.add('has-files');
-                fileList.innerHTML = this.selectedFiles.map((file, index) => `
-                    <div class="file-item">
-                        <div class="file-info">
-                            <div class="file-icon-small">IMG</div>
-                            <div class="file-details">
-                                <div class="file-name">${file.name}</div>
-                                <div class="file-size">${this.formatFileSize(file.size)}</div>
-                            </div>
-                        </div>
-                        <button type="button" class="file-remove" onclick="formManager.removeFile(${index})" title="Remove file">×</button>
-                    </div>
-                `).join('');
-            }
-
-            formatFileSize(bytes) {
-                if (bytes === 0) return '0 Bytes';
-                const k = 1024;
-                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-                const i = Math.floor(Math.log(bytes) / Math.log(k));
-                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
-            }
-
-            showLoading(show) {
-                const loading = document.getElementById('loading');
-                const submitBtn = document.querySelector('.submit-btn');
-                
-                if (show) {
-                    loading.classList.add('show');
-                    submitBtn.disabled = true;
+                if (result.success) {
+                    processingMsg.classList.remove('show');
+                    successMsg.classList.add('show');
+                    document.getElementById('submissionForm').reset();
                 } else {
-                    loading.classList.remove('show');
-                    submitBtn.disabled = false;
+                    alert('Submission failed: ' + result.error);
                 }
-            }
-
-            showSuccess() {
-                document.getElementById('successMessage').classList.add('show');
-            }
-
-            showError(message) {
-                const errorMessage = document.getElementById('errorMessage');
-                const errorText = document.getElementById('errorText');
-                errorText.textContent = message;
-                errorMessage.classList.add('show');
-            }
-
-            hideMessages() {
-                document.getElementById('successMessage').classList.remove('show');
-                document.getElementById('errorMessage').classList.remove('show');
-            }
-
-            resetForm() {
-                document.getElementById('submissionForm').reset();
-                this.selectedFiles = [];
-                this.renderFileList();
+                
+            } catch (error) {
+                console.error('Submission error:', error);
+                alert('Submission failed. Please try again.');
+            } finally {
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+                processingMsg.classList.remove('show');
             }
         }
 
-        // Initialize the form
-        const formManager = new DanceRecitalForm();
+        function compressImage(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.readAsDataURL(file);
+                reader.onload = function (event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function () {
+                        let width = img.width;
+                        let height = img.height;
+                        
+                        // Resize if too large
+                        if (width > MAX_WIDTH) {
+                            height = height * (MAX_WIDTH / width);
+                            width = MAX_WIDTH;
+                        }
+                        
+                        const canvas = document.createElement('canvas');
+                        canvas.width = width;
+                        canvas.height = height;
+                        const ctx = canvas.getContext('2d');
+                        ctx.drawImage(img, 0, 0, width, height);
+                        
+                        const compressedBase64 = canvas.toDataURL('image/jpeg', QUALITY);
+                        resolve({
+                            fileName: file.name.replace(/\.[^/.]+$/, "") + ".jpg",
+                            mimeType: "image/jpeg",
+                            data: compressedBase64.split(',')[1] // remove prefix
+                        });
+                    };
+                    img.onerror = reject;
+                };
+                reader.onerror = reject;
+            });
+        }
     </script>
 </body>
 </html>
