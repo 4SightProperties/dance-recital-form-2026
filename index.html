@@ -787,7 +787,9 @@ Love, Mom & Dad'"></textarea>
             }
 
             handleFileSelect(e) {
+                console.log('handleFileSelect called');
                 const files = Array.from(e.target.files);
+                console.log('Files from input:', files.length);
                 this.addFiles(files);
             }
 
@@ -813,15 +815,34 @@ Love, Mom & Dad'"></textarea>
             }
 
             addFiles(newFiles) {
-                newFiles.forEach(file => {
-                    if (file.type.startsWith('image/') && 
-                        !this.selectedFiles.some(existing => 
+                console.log('=== addFiles DEBUG ===');
+                console.log('addFiles called with:', newFiles.length, 'files');
+                console.log('Current selectedFiles count:', this.selectedFiles.length);
+                
+                newFiles.forEach((file, index) => {
+                    console.log(`Processing file ${index}:`, file.name, 'Type:', file.type, 'Size:', file.size);
+                    
+                    if (file.type.startsWith('image/')) {
+                        console.log('✓ File is an image');
+                        
+                        const isDuplicate = this.selectedFiles.some(existing => 
                             existing.name === file.name && existing.size === file.size
-                        )) {
-                        this.selectedFiles.push(file);
+                        );
+                        
+                        if (!isDuplicate) {
+                            console.log('✓ File is not a duplicate, adding to selectedFiles');
+                            this.selectedFiles.push(file);
+                            console.log('selectedFiles length after adding:', this.selectedFiles.length);
+                        } else {
+                            console.log('✗ File is a duplicate, skipping');
+                        }
+                    } else {
+                        console.log('✗ File is not an image, skipping');
                     }
                 });
-
+                
+                console.log('Final selectedFiles count:', this.selectedFiles.length);
+                console.log('=== End addFiles DEBUG ===');
                 this.renderFileList();
             }
 
