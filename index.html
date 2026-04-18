@@ -6,6 +6,7 @@
     <title>Boombox Dance Recital Ad Submission</title>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        /* Keep all your existing CSS styles exactly the same until the script section */
         :root {
             --primary: #d63384;
             --primary-dark: #b02a5b;
@@ -268,73 +269,53 @@
             transition: all 0.3s ease;
         }
 
-        /* Fixed File Upload Layout */
-        .file-upload-container {
-            position: relative;
+        /* Simplified Upload Button - No Drag & Drop */
+        .upload-button-container {
+            margin-bottom: 20px;
+        }
+
+        .upload-btn {
+            width: 100%;
+            padding: 40px 30px;
+            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(254, 247, 255, 0.9));
             border: 3px dashed var(--border);
             border-radius: 25px;
-            padding: 50px 30px;
-            text-align: center;
-            background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(254, 247, 255, 0.9));
             cursor: pointer;
             transition: all 0.3s ease;
-            overflow: hidden;
-            margin-bottom: 20px; /* Space for preview below */
-        }
-
-        .file-upload-container:hover {
-            border-color: var(--primary);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 35px rgba(214, 51, 132, 0.1);
-        }
-
-        .file-upload-container.drag-over {
-            border-color: var(--primary);
-            background: linear-gradient(135deg, rgba(214, 51, 132, 0.1), rgba(254, 247, 255, 0.9));
-            transform: translateY(-3px);
-        }
-
-        .file-icon {
-            font-size: 4rem;
-            margin-bottom: 20px;
-            display: block;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
-        }
-
-        .file-upload-text {
-            font-size: 1.3rem;
-            font-weight: 600;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
             color: var(--text-primary);
-            margin-bottom: 10px;
+            display: block;
+            text-decoration: none;
         }
 
-        .file-upload-hint {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
+        .upload-btn:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(214, 51, 132, 0.15), rgba(254, 247, 255, 0.95));
+            transform: translateY(-2px);
         }
 
-        .file-input {
+        .upload-icon {
+            font-size: 3rem;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .hidden-input {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
+            width: 1px;
+            height: 1px;
             opacity: 0;
-            cursor: pointer;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
         }
 
-        /* File Preview - OUTSIDE upload container */
+        /* File Preview */
         .file-preview-section {
             margin-top: 20px;
-        }
-
-        .file-preview-list {
-            /* This will contain the uploaded files */
         }
 
         .preview-item {
@@ -346,11 +327,6 @@
             border-radius: 15px;
             margin-bottom: 10px;
             border: 1px solid rgba(214, 51, 132, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        .preview-item:hover {
-            background: rgba(214, 51, 132, 0.08);
         }
 
         .preview-info {
@@ -393,12 +369,9 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            touch-action: manipulation;
-            -webkit-tap-highlight-color: transparent;
         }
 
-        .remove-button:hover,
-        .remove-button:focus {
+        .remove-button:hover {
             background: var(--primary-dark);
             transform: scale(1.1);
         }
@@ -420,7 +393,6 @@
             overflow: hidden;
             margin-top: 40px;
             box-shadow: 0 10px 30px rgba(214, 51, 132, 0.3);
-            touch-action: manipulation;
         }
 
         .submit-btn:hover {
@@ -484,16 +456,9 @@
                 flex-direction: column;
             }
 
-            .file-upload-container {
+            .upload-btn {
                 padding: 30px 20px;
-            }
-
-            .file-upload-text {
                 font-size: 1.1rem;
-            }
-
-            .file-upload-hint {
-                font-size: 0.85rem;
             }
 
             .preview-item {
@@ -563,17 +528,17 @@ Love, Mom & Dad'"></textarea>
             <div class="form-section">
                 <h3 class="section-title">Photo Upload</h3>
                 <div class="form-group">
-                    <!-- Upload container -->
-                    <div class="file-upload-container" id="fileUpload">
-                        <div class="file-icon">📸</div>
-                        <div class="file-upload-text">Drag & Drop Your Dance Photos</div>
-                        <div class="file-upload-hint">or click here to browse your device<br>(JPG, PNG, GIF files)</div>
-                        <input type="file" id="photos" name="photos" multiple accept="image/*" class="file-input" required>
+                    <div class="upload-button-container">
+                        <label for="photos" class="upload-btn">
+                            <span class="upload-icon">📸</span>
+                            Choose Your Dance Photos
+                            <br><small>(JPG, PNG, GIF files)</small>
+                        </label>
+                        <input type="file" id="photos" name="photos" multiple accept="image/*" class="hidden-input" required>
                     </div>
                     
-                    <!-- Preview section - SEPARATE from upload container -->
                     <div class="file-preview-section">
-                        <div class="file-preview-list" id="filePreview"></div>
+                        <div id="filePreview"></div>
                     </div>
                 </div>
             </div>
@@ -602,37 +567,11 @@ Love, Mom & Dad'"></textarea>
 
         let selectedFiles = [];
 
-        // Drag and drop functionality
-        const fileUpload = document.getElementById('fileUpload');
-        const fileInput = document.getElementById('photos');
-
-        fileUpload.addEventListener('dragover', handleDragOver);
-        fileUpload.addEventListener('dragleave', handleDragLeave);
-        fileUpload.addEventListener('drop', handleDrop);
-        fileUpload.addEventListener('click', () => fileInput.click());
-        fileInput.addEventListener('change', handleFileSelect);
-
-        function handleDragOver(e) {
-            e.preventDefault();
-            fileUpload.classList.add('drag-over');
-        }
-
-        function handleDragLeave(e) {
-            e.preventDefault();
-            fileUpload.classList.remove('drag-over');
-        }
-
-        function handleDrop(e) {
-            e.preventDefault();
-            fileUpload.classList.remove('drag-over');
-            const files = Array.from(e.dataTransfer.files);
-            addFiles(files);
-        }
-
-        function handleFileSelect(e) {
+        // Simple file input handler - no drag & drop complications
+        document.getElementById('photos').addEventListener('change', function(e) {
             const files = Array.from(e.target.files);
             addFiles(files);
-        }
+        });
 
         function addFiles(newFiles) {
             newFiles.forEach(file => {
@@ -644,14 +583,14 @@ Love, Mom & Dad'"></textarea>
                 }
             });
             renderFilePreview();
-            
-            // Clear file input to allow re-selecting same files
-            fileInput.value = '';
         }
 
         function removeFile(index) {
             selectedFiles.splice(index, 1);
             renderFilePreview();
+            
+            // Reset file input to allow re-selecting
+            document.getElementById('photos').value = '';
         }
 
         function renderFilePreview() {
@@ -741,7 +680,6 @@ Love, Mom & Dad'"></textarea>
             document.body.appendChild(form);
             form.submit();
             
-            // Wait for submission
             await new Promise(resolve => setTimeout(resolve, 2000));
             document.body.removeChild(form);
         }
