@@ -714,7 +714,7 @@ Love, Mom & Dad'"></textarea>
 
             handleSubmit(e) {
                 e.preventDefault();
-                
+    
                 if (this.selectedFiles.length === 0) {
                     alert('Please upload at least one photo.');
                     return;
@@ -724,7 +724,7 @@ Love, Mom & Dad'"></textarea>
                 this.hideMessages();
 
                 const form = e.target;
-
+            
                 // Create FormData and add form fields
                 const formData = new FormData();
                 formData.append('dancerName', form.dancerName.value);
@@ -732,12 +732,12 @@ Love, Mom & Dad'"></textarea>
                 formData.append('email', form.email.value);
                 formData.append('pageSize', form.pageSize.value);
                 formData.append('message', form.message.value);
-
-                // Add files with specific naming for Google Apps Script
+            
+                // FIXED: Add files with specific naming for Google Apps Script
                 this.selectedFiles.forEach((file, index) => {
                     formData.append(`photo_${index}`, file, file.name);
                 });
-
+            
                 this.submitToGoogleScript(formData);
             }
 
